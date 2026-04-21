@@ -15,7 +15,12 @@ def threshold(img, T): #Función para crear imagen Blanco y Negro
     return imgBN #Imagen en Blanco y Negro
 
 def otsu_threshold(img):
-    return img
+
+    T, imgOtsu = cv2.threshold(img, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU) #Formula para encontrar el umbral, mejo opcion para saber si es balnco o negro
+
+    print("Umbral encontrado:", T) #solo es para saber que umbrañ calculo
+
+    return imgOtsu #Regresa la función en blanci y negro 
 
 def harris_corners(img):
     return img
