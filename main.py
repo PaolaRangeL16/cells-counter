@@ -1,6 +1,8 @@
-from cell_counter.preprocessing import to_gray, gaussian_filter
-from cell_counter.thresholding import otsu_threshold
-from cell_counter.segmentation import connected_components
-from cell_counter.counting import count_objects
+import cv2
+from cell_counter.counting import count_cells
 
-print("Estructura funcionando correctamente")
+img = cv2.imread("imagen.jpg")
+
+count = count_cells(img)
+
+print("Número de células:", count)
