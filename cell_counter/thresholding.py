@@ -1,26 +1,29 @@
-def threshold(img, T): #Función para crear imagen Blanco y Negro 
+import numpy as np
+import cv2
 
-    filas, columnas = img.shape #Sacar las dimensiones 
-    
-    imgBN = np.zeros((filas, columnas), dtype=np.uint8) #Imagen nueva "vacia"
+def threshold(img, T):
+    filas, columnas = img.shape
+    imgBN = np.zeros((filas, columnas), dtype=np.uint8)
 
-    for i in range(filas): #Llenado de la imagen
+    for i in range(filas):
         for j in range(columnas):
-
-            if img[i,j] > T: #Dependiendo del valor del pixel, se pone Blanco y Negro 
-                imgBN[i,j] = 255
+            if img[i, j] > T:
+                imgBN[i, j] = 255
             else:
-                imgBN[i,j] = 0
+                imgBN[i, j] = 0
 
-    return imgBN #Imagen en Blanco y Negro
+    return imgBN
+
 
 def otsu_threshold(img):
+    if len(img.shape) != 2:
+        raise ValueError("La imagen debe estar en escala de grises")
 
-    T, imgOtsu = cv2.threshold(img, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU) #Formula para encontrar el umbral, mejo opcion para saber si es balnco o negro
+    T, imgOtsu = cv2.threshold(img, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+    return imgOtsu
 
-    print("Umbral encontrado:", T) #solo es para saber que umbrañ calculo
-
-    return imgOtsu #Regresa la función en blanci y negro 
 
 def harris_corners(img):
-    return img
+    img = np.float32(img)
+    dst = cv2.cornerHarris(img, 2, 3, 0.04)
+    return dst
