@@ -1,3 +1,9 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Thu Apr 23 12:24:43 2026
+
+@author: paor9
+"""
 # __init__.py
 from .counting import count_cells
 from .preprocessing import preprocess_image, to_gray, gaussian_filter, gamma_correction
