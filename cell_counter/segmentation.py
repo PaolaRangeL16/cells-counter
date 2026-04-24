@@ -1,3 +1,9 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Thu Apr 23 11:13:33 2026
+
+@author: paor9
+"""
 # segmentation.py
 import numpy as np
 import matplotlib.pyplot as plt
