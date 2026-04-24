@@ -1,3 +1,9 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Thu Apr 23 10:04:43 2026
+
+@author: paor9
+"""
 # counting.py
 import numpy as np
 from .preprocessing import preprocess_image
