@@ -53,7 +53,7 @@ python main.py
 
 Muestra cada etapa: canal de color, preprocesamiento, binarización, morfología, watershed y resultado final.
 
-## Estructura
+
 ## Estructura
 
 El paquete principal es la carpeta `cell_counter/`. Dentro de ella, `preprocessing.py` 
