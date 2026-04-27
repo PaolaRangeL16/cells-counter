@@ -67,7 +67,7 @@ separar células pegadas, el filtro de circularidad y las funciones de visualiza
 Finalmente, `counting.py` conecta todo el pipeline en una sola función. Fuera de la 
 carpeta del paquete está `main.py`, que es el script de demostración que muestra cada 
 etapa visualmente.
----
+
 
 ## Parámetros
 
