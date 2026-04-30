@@ -17,4 +17,4 @@ from .segmentation import (
 from .morphology import erode, dilate, morphological_close, morphological_open
 
 __version__ = "1.0.0"
-__author__ = "VMP
+__author__ = "VMP"
