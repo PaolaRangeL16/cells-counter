@@ -7,6 +7,7 @@ Created on Thu Apr 23 09:20:39 2026
 # preprocessing.py
 import numpy as np
 
+
 def to_gray(img):
     if len(img.shape) == 2:
         return img.copy()
@@ -27,13 +28,14 @@ def extract_purple_channel(img):
         return img.copy()
     r = img[:, :, 2].astype(np.float32)  # BGR → canal R
     g = img[:, :, 1].astype(np.float32)
-    # Las células púrpuras tienen R bajo y G bajo vs fondo blanco
-    # Invertimos para que células sean brillantes
     purple = 255 - ((r * 0.5 + g * 0.5)).astype(np.uint8)
     return purple
 
 
 def gaussian_filter(img, kernel_size=5, sigma=1.5):
+    """
+    Filtrado espacial: convolución con kernel gaussiano implementado desde cero.
+    """
     if kernel_size % 2 == 0:
         kernel_size += 1
     kernel = np.zeros((kernel_size, kernel_size), dtype=np.float32)
@@ -56,17 +58,57 @@ def gaussian_filter(img, kernel_size=5, sigma=1.5):
     return filtered
 
 
+def frequency_filter(img, cutoff=30, mode='low'):
+    """
+    Filtrado en frecuencia usando la Transformada de Fourier (np.fft).
+    mode='low'  → pasa bajos: suaviza la imagen eliminando ruido de alta frecuencia.
+    mode='high' → pasa altos: resalta bordes y detalles finos.
+    
+    El parámetro cutoff define el radio del filtro en el dominio de frecuencia.
+    """
+    f = np.fft.fft2(img.astype(np.float32))
+    fshift = np.fft.fftshift(f)
+
+    filas, columnas = img.shape
+    crow, ccol = filas // 2, columnas // 2
+
+    # Máscara circular centrada en las frecuencias bajas
+    mask = np.zeros((filas, columnas), dtype=np.float32)
+    for i in range(filas):
+        for j in range(columnas):
+            if np.sqrt((i - crow)**2 + (j - ccol)**2) <= cutoff:
+                mask[i, j] = 1
+
+    if mode == 'high':
+        mask = 1 - mask
+
+    # Aplicar máscara y regresar al dominio espacial
+    fshift_filtered = fshift * mask
+    f_ishift = np.fft.ifftshift(fshift_filtered)
+    img_filtered = np.fft.ifft2(f_ishift)
+    img_filtered = np.abs(img_filtered)
+
+    return np.clip(img_filtered, 0, 255).astype(np.uint8)
+
+
 def gamma_correction(img, gamma=1.2):
+    """
+    Transformación de intensidad gamma.
+    gamma < 1 → aclara la imagen.
+    gamma > 1 → oscurece la imagen.
+    """
     img_norm = img.astype(np.float32) / 255.0
     img_gamma = np.power(img_norm, gamma)
     return (img_gamma * 255).astype(np.uint8)
 
 
 def preprocess_image(img):
-    # 1. Extraer canal púrpura en lugar de gris estándar
+    # 1. Canal púrpura
     purple = extract_purple_channel(img)
-    # 2. Filtro gaussiano más suave (kernel 5 en lugar de 7)
-    filtered = gaussian_filter(purple, kernel_size=5, sigma=1.5)
-    # 3. Gamma para realzar contraste
+    # 2. Filtrado en frecuencia (pasa bajos) → elimina ruido de alta frecuencia
+    freq_filtered = frequency_filter(purple, cutoff=30, mode='low')
+    # 3. Filtro gaussiano espacial → suavizado fino
+    filtered = gaussian_filter(freq_filtered, kernel_size=5, sigma=1.5)
+    # 4. Corrección gamma → realza contraste
     enhanced = gamma_correction(filtered, gamma=0.8)
     return enhanced
