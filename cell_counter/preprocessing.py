@@ -89,10 +89,10 @@ def gamma_correction(img, gamma=1.2):
 def preprocess_image(img):
     # 1. Canal púrpura
     purple = extract_purple_channel(img)
-    # 2. Filtrado en frecuencia (pasa bajos) → elimina ruido de alta frecuencia
+    # 2. Filtrado en frecuencia (pasa bajos) este elimina ruido de alta frecuencia
     freq_filtered = frequency_filter(purple, cutoff=30, mode='low')
-    # 3. Filtro gaussiano espacial → suavizado fino
+    # 3. Filtro gaussiano espacial ayuda para el suavizado fino
     filtered = gaussian_filter(freq_filtered, kernel_size=5, sigma=1.5)
-    # 4. Corrección gamma → realza contraste
+    # 4. Corrección gamma para  realzar contraste
     enhanced = gamma_correction(filtered, gamma=0.8)
     return enhanced
