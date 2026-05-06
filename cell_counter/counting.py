@@ -13,15 +13,7 @@ from .morphology import morphological_close, morphological_open, erode
 
 
 def count_cells(image, min_area=500, min_distance=20, min_circularity=0.4):
-    """
-    Pipeline completo para contar células en imagen microscópica con tinción púrpura.
-
-    Parámetros:
-        image           : np.ndarray — imagen BGR cargada con cv2.imread
-        min_area        : int   — área mínima en píxeles (500 para esta imagen)
-        min_distance    : int   — distancia mínima entre centros (20 para esta imagen)
-        min_circularity : float — circularidad mínima (0.4 para células redondas)
-    """
+   
     if image is None or not isinstance(image, np.ndarray):
         raise ValueError("Se esperaba una imagen válida como array de NumPy")
 
