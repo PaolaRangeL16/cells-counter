@@ -19,11 +19,7 @@ def to_gray(img):
 
 
 def extract_purple_channel(img):
-    """
-    Para imágenes microscópicas con tinción púrpura (H&E o Giemsa),
-    extrae la información de color que mejor separa células del fondo.
-    Usa el canal R invertido ya que las células púrpuras tienen R bajo.
-    """
+  
     if len(img.shape) == 2:
         return img.copy()
     r = img[:, :, 2].astype(np.float32)  # BGR → canal R
@@ -33,9 +29,7 @@ def extract_purple_channel(img):
 
 
 def gaussian_filter(img, kernel_size=5, sigma=1.5):
-    """
-    Filtrado espacial: convolución con kernel gaussiano implementado desde cero.
-    """
+    
     if kernel_size % 2 == 0:
         kernel_size += 1
     kernel = np.zeros((kernel_size, kernel_size), dtype=np.float32)
@@ -59,13 +53,7 @@ def gaussian_filter(img, kernel_size=5, sigma=1.5):
 
 
 def frequency_filter(img, cutoff=30, mode='low'):
-    """
-    Filtrado en frecuencia usando la Transformada de Fourier (np.fft).
-    mode='low'  → pasa bajos: suaviza la imagen eliminando ruido de alta frecuencia.
-    mode='high' → pasa altos: resalta bordes y detalles finos.
-    
-    El parámetro cutoff define el radio del filtro en el dominio de frecuencia.
-    """
+   
     f = np.fft.fft2(img.astype(np.float32))
     fshift = np.fft.fftshift(f)
 
@@ -92,11 +80,7 @@ def frequency_filter(img, cutoff=30, mode='low'):
 
 
 def gamma_correction(img, gamma=1.2):
-    """
-    Transformación de intensidad gamma.
-    gamma < 1 → aclara la imagen.
-    gamma > 1 → oscurece la imagen.
-    """
+    
     img_norm = img.astype(np.float32) / 255.0
     img_gamma = np.power(img_norm, gamma)
     return (img_gamma * 255).astype(np.uint8)
