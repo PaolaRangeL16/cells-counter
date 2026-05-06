@@ -11,9 +11,9 @@ from collections import deque
 from scipy import ndimage
 
 
-# =========================
+
 # 1. FLOOD FILL (BFS)
-# =========================
+
 def flood_fill(binary, labeled, start_i, start_j, label):
     filas, columnas = binary.shape
     cola = deque([(start_i, start_j)])
@@ -33,14 +33,11 @@ def flood_fill(binary, labeled, start_i, start_j, label):
                     cola.append((ni, nj))
 
 
-# =========================
+
 # 2. COMPONENTES CONECTADOS
-# =========================
+
 def connected_components(binary_img):
-    """
-    Etiqueta regiones conectadas en una imagen binaria usando BFS.
-    Conectividad de 8 vecinos.
-    """
+    
     if len(binary_img.shape) != 2:
         raise ValueError("La imagen debe ser 2D (escala de grises/binaria)")
 
@@ -58,14 +55,10 @@ def connected_components(binary_img):
     return labeled, current_label - 1
 
 
-# =========================
+
 # 3. WATERSHED
-# =========================
 def watershed_segment(binary, min_distance=15):
-    """
-    Separa células pegadas usando transformada de distancia + watershed.
-    Útil cuando la erosión simple no logra separar células que se tocan.
-    """
+    
     binary_bool = (binary > 0).astype(np.uint8)
 
     # Distancia de cada píxel al borde más cercano
@@ -86,9 +79,7 @@ def watershed_segment(binary, min_distance=15):
     return labeled.astype(np.int32), num_cells
 
 
-# =========================
 # 4. ELIMINAR REGIONES PEQUEÑAS
-# =========================
 def remove_small_regions(labeled_img, min_area=200):
     """
     Elimina regiones cuya área en píxeles sea menor a min_area.
@@ -106,15 +97,12 @@ def remove_small_regions(labeled_img, min_area=200):
     return cleaned, num_cells
 
 
-# =========================
+
 # 5. FILTRAR POR CIRCULARIDAD
-# =========================
+
 def filter_by_circularity(labeled_img, min_circularity=0.3):
     """
     Elimina regiones que no son aproximadamente circulares.
-    Circularidad = 4π * área / perímetro²
-    1.0 = círculo perfecto. Espacios irregulares entre células
-    tienen circularidad baja y son eliminados.
     """
     result = np.zeros_like(labeled_img)
     unique_labels = np.unique(labeled_img)
@@ -141,9 +129,8 @@ def filter_by_circularity(labeled_img, min_circularity=0.3):
     return result, new_label - 1
 
 
-# =========================
+
 # 6. RE-ETIQUETADO
-# =========================
 def renumber_labels(labeled_img):
     """
     Re-etiqueta las regiones de forma consecutiva tras eliminar algunas.
@@ -156,9 +143,8 @@ def renumber_labels(labeled_img):
     return result, len(unique_labels)
 
 
-# =========================
+
 # 7. PROPIEDADES DE CÉLULAS
-# =========================
 def get_cell_properties(labeled_img):
     """
     Calcula área, centroide y bounding box de cada célula detectada.
@@ -185,9 +171,8 @@ def get_cell_properties(labeled_img):
     return properties
 
 
-# =========================
 # 8. VISUALIZACIÓN
-# =========================
+
 def visualize_labels(labeled_img, title="Células detectadas", show=True):
     """
     Colorea cada región etiquetada con un color distinto.
