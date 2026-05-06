@@ -17,7 +17,6 @@ def threshold(img, T):
 def otsu_threshold(img):
     """
     Calcula el umbral óptimo de Otsu y regresa (T, imagen binaria).
-    Implementación propia usando solo NumPy.
     """
     if len(img.shape) != 2:
         raise ValueError("La imagen debe estar en escala de grises")
@@ -50,7 +49,7 @@ def adaptive_threshold(img, block_size=31, C=5):
     """
     Umbralización adaptativa: el umbral se calcula localmente
     para cada píxel usando la media de su vecindad.
-    Implementación propia, útil para imágenes con iluminación no uniforme.
+    Para imágenes con iluminación no uniforme.
     """
     if len(img.shape) != 2:
         raise ValueError("La imagen debe estar en escala de grises")
