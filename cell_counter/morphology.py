@@ -9,10 +9,7 @@ Created on Thu Apr 23 15:31:31 2026
 import numpy as np
 
 def _apply_morphology(img, kernel, func):
-    """
-    Función base para erosión y dilatación.
-    Aplica 'func' (np.min o np.max) sobre cada vecindad definida por el kernel.
-    """
+   
     binary = (img > 0).astype(np.uint8)
     kh, kw = kernel.shape
     ph, pw = kh // 2, kw // 2
@@ -28,7 +25,7 @@ def _apply_morphology(img, kernel, func):
 def erode(img, kernel):
     """
     Erosión morfológica: reduce regiones blancas.
-    Útil para separar células pegadas.
+    Para separar células pegadas.
     """
     return _apply_morphology(img, kernel, np.min)
 
@@ -42,7 +39,6 @@ def dilate(img, kernel):
 
 def morphological_close(img, kernel):
     """
-    Cierre morfológico: dilatar → erosionar.
     Cierra huecos internos dentro de las células.
     """
     return erode(dilate(img, kernel), kernel)
@@ -50,7 +46,6 @@ def morphological_close(img, kernel):
 
 def morphological_open(img, kernel):
     """
-    Apertura morfológica: erosionar → dilatar.
     Elimina ruido pequeño fuera de las células.
     """
     return dilate(erode(img, kernel), kernel)
