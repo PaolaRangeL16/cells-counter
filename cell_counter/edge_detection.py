@@ -11,10 +11,7 @@ from scipy import signal
 
 
 def sobel(img):
-    """
-    Detección de bordes con operador Sobel.
-    Calcula el gradiente en X y Y, luego combina con la magnitud.
-    """
+   
     if len(img.shape) != 2:
         raise ValueError("La imagen debe estar en escala de grises")
 
@@ -33,10 +30,7 @@ def sobel(img):
 
 
 def prewitt(img):
-    """
-    Detección de bordes con operador Prewitt.
-    Similar a Sobel pero con pesos uniformes en el kernel.
-    """
+    
     if len(img.shape) != 2:
         raise ValueError("La imagen debe estar en escala de grises")
 
@@ -55,10 +49,7 @@ def prewitt(img):
 
 
 def laplacian(img):
-    """
-    Detección de bordes con Laplaciano.
-    Segunda derivada de la imagen, sensible a cambios bruscos de intensidad.
-    """
+    
     if len(img.shape) != 2:
         raise ValueError("La imagen debe estar en escala de grises")
 
@@ -72,8 +63,6 @@ def laplacian(img):
 
 def hough_circles(img, min_radius=20, max_radius=90, min_dist=40):
     """
-    Detecta círculos con la Transformada de Hough circular.
-    Útil como método complementario al watershed para células circulares.
     Regresa la imagen con círculos marcados y el conteo.
     """
     import cv2
